@@ -1,9 +1,7 @@
 FROM golang:1.9
 
-WORKDIR /go/src/app
-COPY . .
+COPY . /go/src/app
 
-RUN go-wrapper download   # "go get -d -v ./..."
-RUN go-wrapper install    # "go install -v ./..."
+EXPOSE 80
 
-CMD ["go-wrapper", "run", "api"] # ["app"]
+CMD ["go", "run", "/go/src/app/api.go"]
