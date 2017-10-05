@@ -12,6 +12,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	token, err := GenerateRandomString(32)
 	if err != nil {
 		fmt.Fprint(w, err)
+		return
 	}
 	fmt.Fprintf(w, token)
 }
@@ -28,19 +29,19 @@ func main() {
 // number generator fails to function correctly, in which
 // case the caller should not continue.
 func GenerateRandomBytes(n int) ([]byte, error) {
-	b := make([]byte, n)
-	_, err := rand.Read(b)
-	// Note that err == nil only if we read len(b) bytes.
+	outputBytes := make([]byte, n)
+	_, err := rand.Read(outputBytes)
+	// Note that err == nil only if we read len(outputBytes) bytes.
 	if err != nil {
 		return nil, err
 	}
 
-	return b, nil
+	return outputBytes, nil
 }
 
 // GenerateRandomString returns a URL-safe, base64 encoded
 // securely generated random string.
 func GenerateRandomString(s int) (string, error) {
-	b, err := GenerateRandomBytes(s)
-	return base64.URLEncoding.EncodeToString(b), err
+	randomBytes, err := GenerateRandomBytes(s)
+	return base64.URLEncoding.EncodeToString(randomBytes), err
 }

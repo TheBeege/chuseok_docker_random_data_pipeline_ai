@@ -1,8 +1,31 @@
-version: '2'
+version: "3"
 
 services:
+
   api:
     build:
       context: ./api
+    deploy:
+      mode: replicated
+      replicas: 5
     ports:
       - "80:80"
+
+  collector:
+    build:
+      context: ./collector
+      args:
+        url: "http://api:80"
+        countCollectors: 30
+        countQueueProducers: 5
+    ports:
+      - "90:80"
+    links:
+      - api
+      - messageQueue
+
+
+  messageQueue:
+    image: "spotify/kafka"
+    ports:
+      - "9092:9092"
