@@ -10,6 +10,10 @@ ARG url
 ARG countCollectors
 ARG countQueueProducers
 
+ENV url ${url}
+ENV countCollectors ${countCollectors}
+ENV countQueueProducers ${countQueueProducers}
+
 EXPOSE 80
 
-CMD ["go-wrapper", "run", "$url", "$countCollectors", "$countQueueProducers"]
+CMD go-wrapper run ${url} ${countCollectors} ${countQueueProducers}
